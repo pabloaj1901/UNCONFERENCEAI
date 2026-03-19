@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-4 Facilitator Script — PMO unCON 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Epilogue:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent:  #0A7B6C;
+    --accent2: #1DAA96;
+    --accent3: #5DC8B8;
+    --tint:    #E8F5F3;
+    --tint2:   #C8EAE6;
+    --dark:    #062520;
+    --label:   #0A6558;
+    --muted:   #4A8078;
+    --border:  #A8D8D2;
+
+    --ink:   #1C1C1C;
+    --ink-l: #5A5550;
+    --rule:  #E5E0D8;
+    --bg:    #F5F2EE;
+    --white: #FFFFFF;
+
+    --quote-bg: #FFFDF5;
+    --quote-bd: #E8D060;
+    --note-bg:  #F5F5F5;
+    --note-bd:  #C8C8C8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Epilogue', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 2.5rem 2rem;
+    line-height: 1.6;
+  }
+
+  .doc { max-width: 800px; margin: 0 auto; }
+
+  /* DOC HEADER */
+  .doc-header {
+    background: var(--white);
+    border-radius: 6px 6px 0 0;
+    padding: 2rem 2.8rem 1.8rem;
+    border-bottom: 3px solid var(--accent);
+  }
+  .doc-super {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--muted); margin-bottom: 0.5rem;
+  }
+  .doc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 800; line-height: 1.2;
+    color: var(--dark); margin-bottom: 0.5rem;
+  }
+  .doc-sub { font-size: 0.82rem; color: var(--ink-l); }
+  .doc-sub strong { color: var(--label); }
+
+  /* BRIDGE FROM AI-1 */
+  .bridge-banner {
+    background: var(--tint2);
+    border-left: 4px solid var(--accent);
+    padding: 0.9rem 2.8rem;
+    font-size: 0.82rem; font-style: italic; font-weight: 500;
+    color: var(--label);
+  }
+
+  /* SECTIONS */
+  .section {
+    background: var(--white);
+    padding: 2rem 2.8rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section:last-child { border-bottom: none; border-radius: 0 0 6px 6px; }
+
+  .sec-header {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.4rem;
+  }
+  .sec-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; font-weight: 700;
+    color: #fff; background: var(--accent);
+    border-radius: 3px; width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sec-label-wrap { flex: 1; }
+  .sec-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.15rem;
+  }
+  .sec-title { font-size: 1rem; font-weight: 700; color: var(--dark); }
+  .sec-timing {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; color: var(--muted);
+    background: var(--tint); padding: 0.2rem 0.6rem;
+    border-radius: 100px; white-space: nowrap;
+  }
+
+  .intent {
+    font-size: 0.8rem; font-weight: 500; font-style: italic;
+    color: var(--ink-l); margin-bottom: 1.2rem;
+    padding-left: 0.6rem; border-left: 2px solid var(--accent3);
+  }
+
+  /* SAY */
+  .say {
+    background: var(--quote-bg);
+    border: 1.5px solid var(--quote-bd);
+    border-radius: 5px; padding: 1rem 1.3rem; margin: 0.8rem 0;
+  }
+  .say::before {
+    content: 'SAY';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem; font-weight: 700; letter-spacing: 0.12em;
+    color: #B09040; display: block; margin-bottom: 0.4rem;
+  }
+  .say p { font-size: 0.87rem; font-weight: 500; line-height: 1.55; color: var(--ink); }
+  .say p em { font-style: italic; }
+  .say p strong { font-weight: 700; color: var(--dark); }
+
+  /* KEY PHRASE */
+  .kp {
+    background: var(--tint2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 0.55rem 0.85rem; margin: 0.6rem 0;
+    font-size: 0.82rem; font-weight: 600; line-height: 1.45; color: var(--dark);
+  }
+  .kp em { font-style: italic; }
+
+  /* NOTE */
+  .note {
+    background: var(--note-bg);
+    border: 1.5px dashed var(--note-bd);
+    border-radius: 4px; padding: 0.7rem 1rem; margin: 0.7rem 0;
+    font-size: 0.76rem; color: var(--ink-l); line-height: 1.45;
+  }
+  .note::before {
+    content: '↳ NOTE  ';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem; font-weight: 700; letter-spacing: 0.1em; color: #999;
+  }
+
+  /* BRIDGE */
+  .bridge {
+    background: var(--tint);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 4px 4px 0;
+    padding: 0.75rem 1rem; margin: 1rem 0;
+    font-size: 0.8rem; font-style: italic; font-weight: 500; color: var(--label);
+  }
+
+  /* STEP BLOCK */
+  .step-block {
+    border-radius: 4px; padding: 0.85rem 1.05rem; margin: 0.6rem 0;
+    border: 1.5px solid var(--border); background: var(--tint);
+  }
+  .sb-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+  .sb-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem; font-weight: 700;
+    color: #fff; background: var(--accent);
+    border-radius: 3px; width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sb-title { font-size: 0.84rem; font-weight: 700; color: var(--dark); }
+  .sb-desc  { font-size: 0.75rem; color: var(--ink-l); line-height: 1.42; }
+  .sb-kp    { margin-top: 0.4rem; font-size: 0.76rem; font-weight: 600; font-style: italic; color: var(--label); }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--rule); margin: 1.2rem 0; }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    border-radius: 5px; padding: 1.2rem 1.5rem;
+    background: var(--tint); border: 1.5px solid var(--border); margin-top: 1.2rem;
+  }
+  .sb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.57rem; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--muted); margin-bottom: 0.5rem;
+  }
+  .sb-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem; font-style: italic; line-height: 1.55; color: var(--dark);
+  }
+
+  /* 90-DAY VISUAL */
+  .day-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.8rem; margin: 0.9rem 0; }
+  .dg-col { border-radius: 4px; padding: 0.85rem; border: 1.5px solid var(--rule); }
+  .dg-h {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.09em; margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem; border-bottom: 2px solid;
+  }
+  .dg-1 .dg-h { color: var(--label); border-color: var(--accent2); }
+  .dg-2 .dg-h { color: #7A5500; border-color: #E8C840; }
+  .dg-3 .dg-h { color: #266030; border-color: #78C878; }
+  .dg-col ul { list-style: none; }
+  .dg-col li { font-size: 0.72rem; color: var(--ink-l); padding: 0.18rem 0 0.18rem 1rem; position: relative; line-height: 1.4; }
+  .dg-col li::before { content: '→'; position: absolute; left: 0; font-size: 0.6rem; color: #CCC; }
+
+  /* PHRASE BANK */
+  .phrase-bank { columns: 2; gap: 1rem; }
+  .pb-item {
+    break-inside: avoid; padding: 0.5rem 0.75rem; margin-bottom: 0.5rem;
+    border-radius: 4px; font-size: 0.77rem; font-weight: 500; line-height: 1.44;
+    border-left: 3px solid var(--accent); background: var(--tint); color: var(--ink);
+  }
+  .pb-item em { font-style: italic; }
+
+  .page-break { page-break-before: always; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .doc { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <div class="doc-header">
+    <div class="doc-super">PMO unCON 2026 · AI &amp; Innovation Track · AI-4</div>
+    <div class="doc-title">Facilitator Script — Session AI-4</div>
+    <div class="doc-sub">
+      <strong>March 25</strong> &nbsp;·&nbsp; Designing a Practical Roadmap for Integrating AI into Project Management &nbsp;·&nbsp;
+      This session is not about exploring what AI is. It's about deciding what to do first — with discipline, not enthusiasm.
+    </div>
+  </div>
+
+  <div class="bridge-banner">
+    Bridge from AI-1: "Once you know the difference between ML, generative, conversational, and agentic AI, the next executive question is inevitable: <em>So what do we do first?</em> That's exactly what this session is built to answer."
+  </div>
+
+  <!-- ══ SECTION 1 — OPENING ══ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">1</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Opening</div>
+        <div class="sec-title">Reframe the Room — Roadmap as Decision Sequence</div>
+      </div>
+      <div class="sec-timing">~0:00–0:08</div>
+    </div>
+
+    <div class="intent">Goal: immediately break the assumption that a roadmap is a wishlist. Establish from the first minute that this session is about decision discipline, not idea generation.</div>
+
+    <div class="say">
+      <p>"If Session AI-1 was about <strong>seeing clearly</strong> — this session is about <strong>deciding clearly</strong>."</p>
+    </div>
+
+    <div class="say">
+      <p>"Most organizations approach AI with a backlog of ideas. They call it a roadmap. <strong>It isn't.</strong>"</p>
+    </div>
+
+    <div class="kp">"A roadmap is not a parking lot for ideas. A roadmap is a sequence of decisions."</div>
+
+    <div class="say">
+      <p>"Those decisions are: where is there real value, what is actually ready, who is accountable, what risk are you accepting, how will you know if it worked, and <em>when</em> do you scale — versus when do you stop."</p>
+    </div>
+
+    <div class="note">Keep the opening short and sharp. You want the room slightly uncomfortable with the word "decision" — because most organizations have been avoiding it by calling everything a roadmap.</div>
+
+    <div class="bridge">→ From here: "Let's talk about how to build the real thing."</div>
+  </div>
+
+  <!-- ══ SECTION 2 — THE CORE QUESTION ══ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">2</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Framing</div>
+        <div class="sec-title">The Question This Session Answers</div>
+      </div>
+      <div class="sec-timing">~0:08–0:15</div>
+    </div>
+
+    <div class="intent">Goal: name the real challenge explicitly. Give the room permission to say "we haven't figured this out yet."</div>
+
+    <div class="say">
+      <p>"The question we're really here to answer is: <strong>how do you introduce AI into project management without creating chaos, hype, or pilot graveyards?</strong>"</p>
+    </div>
+
+    <div class="say">
+      <p>"Almost every PMO leader in this room has seen at least one of these: a pilot that got demoed to the board and then quietly died. A tool that got purchased and never adopted. An initiative labeled 'AI' that was really just a dashboard refresh."</p>
+    </div>
+
+    <div class="note">Pause here and let a few people nod — or laugh. That recognition is important. It validates that the problem is real and shared, and opens up psychological safety for honest conversation.</div>
+
+    <div class="say">
+      <p>"The goal of a first roadmap is not to prove that AI is possible. <strong>It is to prove that value can be created repeatedly, responsibly, and in a way people will actually use.</strong>"</p>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 3 — THE 5-STEP LOGIC ══ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">3</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Content Core</div>
+        <div class="sec-title">The Roadmap Logic — 5 Steps</div>
+      </div>
+      <div class="sec-timing">~0:15–0:45</div>
+    </div>
+
+    <div class="intent">Goal: give a practical framework that's memorable and immediately usable. Walk through each step with a concrete PMO example. This is the densest content block — keep each step short and sharp.</div>
+
+    <div class="step-block">
+      <div class="sb-header"><div class="sb-num">1</div><div class="sb-title">Pick the PMO problem — not the tool</div></div>
+      <div class="sb-desc">Portfolio visibility · status reporting burden · demand intake · risk detection · meeting overload · executive reporting inconsistency. Start with the pain, not the technology.</div>
+      <div class="sb-kp">"Do not choose tools first. Choose the job to be done first."</div>
+    </div>
+
+    <div class="say">
+      <p>"The single most common mistake in AI roadmaps: someone picks a tool — Copilot, an LLM, an automation platform — and then goes looking for problems to solve with it. That's backwards. <strong>Start with where the PMO is losing time, judgment, visibility, or influence. The tool comes after.</strong>"</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="step-block">
+      <div class="sb-header"><div class="sb-num">2</div><div class="sb-title">Match the right AI pattern to the problem</div></div>
+      <div class="sb-desc">Repetitive process → RPA first. Access / interaction pain → Conversational. Creation / synthesis → Generative. Multi-step coordination → Agentic. The type of pain should determine the type of AI.</div>
+      <div class="sb-kp">"Not every problem needs a bazooka. And not every problem needs a language model."</div>
+    </div>
+
+    <div class="say">
+      <p>"This is where AI-1 connects directly to AI-4. Once you understand the difference between ML, generative, conversational, and agentic AI, you can match the right pattern to the right problem. <strong>The organizations that do this well don't buy AI. They design AI into specific workflows.</strong>"</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="step-block">
+      <div class="sb-header"><div class="sb-num">3</div><div class="sb-title">Check readiness — honestly</div></div>
+      <div class="sb-desc">Process clarity · data quality · ownership · governance design · executive sponsorship · user willingness. Six dimensions. Most organizations are strong on two and weak on four.</div>
+      <div class="sb-kp">"An AI initiative without process clarity is not a roadmap. It's a hope."</div>
+    </div>
+
+    <div class="say">
+      <p>"Readiness is not a binary. It's a profile. You might have excellent executive sponsorship and terrible data quality. You might have clear process and zero ownership. <strong>The readiness check is about knowing which gaps to close before you start — not after you fail.</strong>"</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="step-block">
+      <div class="sb-header"><div class="sb-num">4</div><div class="sb-title">Pilot for learning — not for theater</div></div>
+      <div class="sb-desc">A pilot must test a concrete hypothesis. Not: "let's try AI on status reports." Yes: "we believe AI-assisted summaries will reduce reporting time by 40% for PMs with 5+ active projects — and we'll know in 6 weeks."</div>
+      <div class="sb-kp">"The difference between a pilot that builds momentum and one that quietly dies: specificity of hypothesis."</div>
+    </div>
+
+    <div class="say">
+      <p>"Pilot graveyards exist because pilots are treated as demos. A demo shows that something is possible. A pilot proves whether it creates value in your specific context. <strong>Those are very different things.</strong>"</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="step-block">
+      <div class="sb-header"><div class="sb-num">5</div><div class="sb-title">Scale only what changed behavior</div></div>
+      <div class="sb-desc">Not: "people used it." Not: "the demo went well." Yes: "this changed how project managers make decisions" or "this reduced the time to escalation by X." Behavior change is the signal.</div>
+      <div class="sb-kp">"If it only produced demos, don't scale it."</div>
+    </div>
+
+    <div class="say">
+      <p>"Scaling a tool that people tolerate is worse than not scaling it at all. It consumes budget, creates inertia, and makes the next real initiative harder to get approved. <strong>Scale only what actually changed something.</strong>"</p>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 4 — QUICK WINS vs FOUNDATIONS ══ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">4</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Strategic Tension</div>
+        <div class="sec-title">Quick Wins vs. Foundational Moves</div>
+      </div>
+      <div class="sec-timing">~0:45–1:00</div>
+    </div>
+
+    <div class="intent">Goal: name the tension explicitly. Most rooms will have people who want visible wins and people who want to build the right foundation. Don't resolve the tension — use it.</div>
+
+    <div class="kp">"Some wins should be visible fast. Others are invisible at first — but make everything else possible later."</div>
+
+    <div class="say">
+      <p>"Quick win example: AI-assisted status summaries. Someone sets it up in two weeks, PMs use it, the CFO sees it in a demo. Visible. Fast. Low governance complexity."</p>
+    </div>
+
+    <div class="say">
+      <p>"Foundational move example: standardizing project metadata and cleaning the portfolio taxonomy. Nobody demos a taxonomy. But without it, your AI has nothing clean to learn from — and everything you build on top will drift."</p>
+    </div>
+
+    <div class="say">
+      <p>"<strong>Most organizations need both. The mistake is doing only one.</strong> All quick wins and no foundation = a PMO that looks modern but isn't. All foundation and no wins = a PMO that never gets the budget to finish."</p>
+    </div>
+
+    <div class="note">This is a natural place to surface tension from the room. Ask: "Who here has been burned by moving too fast? Who has been burned by moving too slow?" Both experiences are in the room. Use them.</div>
+  </div>
+
+  <!-- ══ SECTION 5 — TOOL vs CAPABILITY ROADMAP ══ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">5</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Key Distinction</div>
+        <div class="sec-title">Tool Roadmap vs. Capability Roadmap</div>
+      </div>
+      <div class="sec-timing">~1:00–1:10</div>
+    </div>
+
+    <div class="intent">Goal: land one of the sharpest distinctions in the session. This reframes what "AI strategy" actually means for a PMO.</div>
+
+    <div class="kp">"Most organizations think they need a tool roadmap. What they really need is a capability roadmap."</div>
+
+    <div class="say">
+      <p>"A tool roadmap says: Q1 we deploy Copilot, Q2 we add an analytics layer, Q3 we pilot an agent. A capability roadmap asks: what does our team need to be able to do, decide, and design — and what combination of skills, process, data, and technology gets us there?"</p>
+    </div>
+
+    <div class="say">
+      <p>"If you buy technology without building capability, three things happen: nobody adopts it, it doesn't integrate, and it doesn't change decisions. <strong>Technology without capability is just a subscription cost.</strong>"</p>
+    </div>
+
+    <div class="kp">"If everyone is 'supporting' AI, no one is owning AI."</div>
+
+    <div class="say">
+      <p>"The PMO doesn't need to build everything. But it needs to own something specific: the prioritization criteria, the governance design, the adoption logic, and the connection between AI initiatives and business value. <strong>That's the PMO's role — not as a builder, but as the decision architecture for AI adoption.</strong>"</p>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 6 — DYNAMICS ══ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">6</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Dynamics</div>
+        <div class="sec-title">90-Day Roadmap → CEO Challenge</div>
+      </div>
+      <div class="sec-timing">~1:10–1:30 + post-break</div>
+    </div>
+
+    <div class="intent">Goal: move from framework to decision. The 90-day exercise forces specificity. The CEO Challenge forces prioritization under pressure. Together they produce the most actionable output of the track.</div>
+
+    <div class="say">
+      <p>"Each table is going to build a 90-day roadmap. Real or fictional organization — your choice. Three phases. And for each use case you include, I need five things: <strong>what it is, why it matters, what the readiness gap is, who owns it, and what the success signal looks like.</strong>"</p>
+    </div>
+
+    <div class="day-grid">
+      <div class="dg-col dg-1">
+        <div class="dg-h">Days 1–30 · Discover</div>
+        <ul>
+          <li>Map real PMO pain points</li>
+          <li>Assess data &amp; process readiness</li>
+          <li>Identify sponsors and owners</li>
+          <li>Select 1–2 use cases to validate</li>
+        </ul>
+      </div>
+      <div class="dg-col dg-2">
+        <div class="dg-h">Days 31–60 · Pilot</div>
+        <ul>
+          <li>Narrow, hypothesis-driven pilot</li>
+          <li>Measure behavior change</li>
+          <li>Document what broke and why</li>
+          <li>Build governance layer early</li>
+        </ul>
+      </div>
+      <div class="dg-col dg-3">
+        <div class="dg-h">Days 61–90 · Decide</div>
+        <ul>
+          <li>Scale, stop, or pivot — explicitly</li>
+          <li>Define capability gaps to close</li>
+          <li>Set the next 90-day intention</li>
+          <li>Communicate results to executives</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">As tables work, push back on anything vague. "What exactly is the success signal?" is the most important question. If the table can't name it specifically, their roadmap isn't real yet.</div>
+
+    <div class="divider"></div>
+
+    <div class="say">
+      <p>"Now — same roadmap. Your CEO walks in and says: <em>'Fine. You have budget for one AI initiative this year. Why this one? Why now?'</em>"</p>
+    </div>
+
+    <div class="say">
+      <p>"Two questions. One answer. And it needs to work at the executive level — not the PM level."</p>
+    </div>
+
+    <div class="note">This pressure test is not a gotcha — it's a gift. It forces the room to translate their roadmap into executive language. If they can't answer "why this, why now" in 60 seconds, the roadmap isn't ready to be funded. Let them struggle with that briefly before debriefing.</div>
+  </div>
+
+  <!-- ══ SECTION 7 — CLOSE ══ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">7</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Close</div>
+        <div class="sec-title">Session Close — What to Leave Them With</div>
+      </div>
+      <div class="sec-timing">Final ~15 min</div>
+    </div>
+
+    <div class="intent">Goal: convergence on 3–5 themes, then close with ambition — not a to-do list. The session ends with a sense of what's possible if the decisions get made well.</div>
+
+    <div class="say">
+      <p>"PMOs shouldn't ask only 'How can AI help us work faster?' The better question is: <strong>'How can AI help us make better decisions, create clearer visibility, and redesign services that people actually value?'</strong>"</p>
+    </div>
+
+    <div class="say">
+      <p>"The PMO of the next cycle may still need strong project managers. But it will also need people who can work across data, process, change, and AI-enabled service design. <strong>That's not a technology evolution. That's an operating model evolution.</strong>"</p>
+    </div>
+
+    <div class="kp">"The biggest risk is not moving too slowly. It's moving noisily — without value logic."</div>
+
+    <div class="summary-box">
+      <div class="sb-label">Closing Line</div>
+      <div class="sb-text">"The goal of a first roadmap is not to prove that AI is possible. It is to prove that value can be created repeatedly, responsibly — and in a way people will actually use."</div>
+    </div>
+  </div>
+
+  <!-- ══ PHRASE BANK ══ -->
+  <div class="section page-break">
+    <div class="sec-header">
+      <div class="sec-num">✦</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Quick Reference</div>
+        <div class="sec-title">All Key Phrases — AI-4</div>
+      </div>
+    </div>
+    <div class="intent">Every phrase worth landing verbatim or close to it. Organized by the order they appear in the session arc.</div>
+
+    <div class="phrase-bank" style="margin-top:1rem;">
+      <div class="pb-item">"If AI-1 was about seeing clearly — AI-4 is about deciding clearly."</div>
+      <div class="pb-item">"A roadmap is not a parking lot for ideas. A roadmap is a sequence of decisions."</div>
+      <div class="pb-item">"How do you introduce AI into project management without creating chaos, hype, or pilot graveyards?"</div>
+      <div class="pb-item">"The goal of a first roadmap is not to prove that AI is possible. It is to prove that value can be created repeatedly, responsibly, and in a way people will actually use."</div>
+      <div class="pb-item">"Do not choose tools first. Choose the job to be done first."</div>
+      <div class="pb-item">"The organizations that do this well don't buy AI. They design AI into specific workflows."</div>
+      <div class="pb-item">"An AI initiative without process clarity is not a roadmap. It's a hope."</div>
+      <div class="pb-item">"The readiness check is about knowing which gaps to close before you start — not after you fail."</div>
+      <div class="pb-item">"The difference between a pilot that builds momentum and one that quietly dies: specificity of hypothesis."</div>
+      <div class="pb-item">"A demo shows that something is possible. A pilot proves whether it creates value in your specific context."</div>
+      <div class="pb-item">"If it only produced demos, don't scale it."</div>
+      <div class="pb-item">"Some wins should be visible fast. Others are invisible at first — but make everything else possible later."</div>
+      <div class="pb-item">"Most organizations need both quick wins and foundations. The mistake is doing only one."</div>
+      <div class="pb-item">"Most organizations think they need a tool roadmap. What they really need is a capability roadmap."</div>
+      <div class="pb-item">"Technology without capability is just a subscription cost."</div>
+      <div class="pb-item">"If everyone is 'supporting' AI, no one is owning AI."</div>
+      <div class="pb-item">"The PMO's role: not as a builder, but as the decision architecture for AI adoption."</div>
+      <div class="pb-item">"Why this? Why now?" — the two questions every AI initiative must be able to answer at the executive level.</div>
+      <div class="pb-item">"How can AI help us make better decisions, create clearer visibility, and redesign services people actually value?"</div>
+      <div class="pb-item">"That's not a technology evolution. That's an operating model evolution."</div>
+      <div class="pb-item">"The biggest risk is not moving too slowly. It's moving noisily — without value logic."</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-1 Facilitator Script — PMO unCON 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Epilogue:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent:  #4C2C9E;
+    --accent2: #7B52D4;
+    --accent3: #A07EE8;
+    --tint:    #F0ECFF;
+    --tint2:   #DDD4F8;
+    --dark:    #1A1030;
+    --label:   #3D2080;
+    --muted:   #7060A0;
+    --border:  #C8B8F0;
+
+    --ink:   #1C1C1C;
+    --ink-l: #5A5550;
+    --rule:  #E5E0D8;
+    --bg:    #F5F2EE;
+    --white: #FFFFFF;
+
+    --quote-bg:    #FFFDF5;
+    --quote-bd:    #E8D060;
+    --note-bg:     #F5F5F5;
+    --note-bd:     #C8C8C8;
+    --bridge-bg:   #F4F0FF;
+    --bridge-bd:   var(--accent2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Epilogue', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 2.5rem 2rem;
+    line-height: 1.6;
+  }
+
+  .doc {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* ── DOC HEADER ── */
+  .doc-header {
+    background: var(--white);
+    border-radius: 6px 6px 0 0;
+    padding: 2rem 2.8rem 1.8rem;
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: 0;
+  }
+  .doc-super {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--muted); margin-bottom: 0.5rem;
+  }
+  .doc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 800; line-height: 1.2;
+    color: var(--dark); margin-bottom: 0.5rem;
+  }
+  .doc-sub {
+    font-size: 0.82rem; color: var(--ink-l);
+  }
+  .doc-sub strong { color: var(--label); }
+
+  /* ── SECTIONS ── */
+  .section {
+    background: var(--white);
+    padding: 2rem 2.8rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section:last-child {
+    border-bottom: none;
+    border-radius: 0 0 6px 6px;
+  }
+
+  /* Section header */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+  .sec-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; font-weight: 700;
+    color: #fff; background: var(--accent);
+    border-radius: 3px;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .sec-label-wrap { flex: 1; }
+  .sec-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+  .sec-title {
+    font-size: 1rem; font-weight: 700; color: var(--dark);
+  }
+  .sec-timing {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; color: var(--muted);
+    background: var(--tint); padding: 0.2rem 0.6rem;
+    border-radius: 100px; white-space: nowrap;
+  }
+
+  /* Intent line */
+  .intent {
+    font-size: 0.8rem; font-weight: 500; font-style: italic;
+    color: var(--ink-l); margin-bottom: 1.2rem;
+    padding-left: 0.6rem; border-left: 2px solid var(--accent3);
+  }
+
+  /* Say this block */
+  .say {
+    background: var(--quote-bg);
+    border: 1.5px solid var(--quote-bd);
+    border-radius: 5px;
+    padding: 1rem 1.3rem;
+    margin: 0.8rem 0;
+    position: relative;
+  }
+  .say::before {
+    content: 'SAY';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem; font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #B09040;
+    display: block; margin-bottom: 0.4rem;
+  }
+  .say p {
+    font-size: 0.87rem; font-weight: 500; line-height: 1.55;
+    color: var(--ink);
+  }
+  .say p em { font-style: italic; }
+  .say p strong { font-weight: 700; color: var(--dark); }
+
+  /* Key phrase — highlight */
+  .kp {
+    background: var(--tint2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 0.55rem 0.85rem;
+    margin: 0.6rem 0;
+    font-size: 0.82rem; font-weight: 600;
+    line-height: 1.45; color: var(--dark);
+  }
+  .kp em { font-style: italic; }
+
+  /* Facilitator note */
+  .note {
+    background: var(--note-bg);
+    border: 1.5px dashed var(--note-bd);
+    border-radius: 4px;
+    padding: 0.7rem 1rem;
+    margin: 0.7rem 0;
+    font-size: 0.76rem; color: var(--ink-l); line-height: 1.45;
+  }
+  .note::before {
+    content: '↳ NOTE  ';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem; font-weight: 700; letter-spacing: 0.1em;
+    color: #999;
+  }
+
+  /* Bridge / transition */
+  .bridge {
+    background: var(--bridge-bg);
+    border-left: 3px solid var(--bridge-bd);
+    border-radius: 0 4px 4px 0;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.8rem; font-style: italic; font-weight: 500;
+    color: var(--label);
+  }
+
+  /* Type card inline */
+  .type-block {
+    border-radius: 4px; padding: 0.9rem 1.1rem;
+    margin: 0.65rem 0; border: 1.5px solid;
+  }
+  .tb-ml   { background: #F4F0FF; border-color: #C0AEED; }
+  .tb-gen  { background: #F0FAF5; border-color: #8ED4B0; }
+  .tb-conv { background: #FFF9EC; border-color: #E8CF7A; }
+  .tb-agt  { background: #FFF0F4; border-color: #F0A0B8; }
+  .tb-rpa  { background: #F7F7F5; border-color: #CCC8C0; }
+
+  .tb-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+  .tb-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 0.16rem 0.48rem; border-radius: 3px;
+  }
+  .tb-ml   .tb-chip { background: #C0AEED; color: #1a0a50; }
+  .tb-gen  .tb-chip { background: #8ED4B0; color: #0a3a1a; }
+  .tb-conv .tb-chip { background: #E8CF7A; color: #4a2a00; }
+  .tb-agt  .tb-chip { background: #F0A0B8; color: #5a0820; }
+  .tb-rpa  .tb-chip { background: #CCC8C0; color: #333; }
+
+  .tb-verb { font-size: 0.85rem; font-weight: 700; color: var(--ink); }
+  .tb-desc { font-size: 0.76rem; color: var(--ink-l); line-height: 1.42; }
+  .tb-kp   { margin-top: 0.45rem; font-size: 0.76rem; font-weight: 600; color: var(--dark); font-style: italic; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--rule); margin: 1.2rem 0; }
+
+  /* Summary box */
+  .summary-box {
+    border-radius: 5px; padding: 1.2rem 1.5rem;
+    background: var(--tint); border: 1.5px solid var(--border);
+    margin-top: 1.2rem;
+  }
+  .sb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.57rem; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .sb-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem; font-style: italic;
+    line-height: 1.55; color: var(--dark);
+  }
+
+  /* Phrase bank at end */
+  .phrase-bank {
+    columns: 2; gap: 1rem;
+  }
+  .pb-item {
+    break-inside: avoid;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.77rem; font-weight: 500;
+    line-height: 1.44;
+    border-left: 3px solid var(--accent);
+    background: var(--tint);
+    color: var(--ink);
+  }
+  .pb-item em { font-style: italic; }
+
+  .page-break { page-break-before: always; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .doc { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- DOC HEADER -->
+  <div class="doc-header">
+    <div class="doc-super">PMO unCON 2026 · AI &amp; Innovation Track · AI-1</div>
+    <div class="doc-title">Facilitator Script — Session AI-1</div>
+    <div class="doc-sub">
+      <strong>March 24, morning</strong> &nbsp;·&nbsp; Exploring AI Opportunities for the PMO: From Ideas to Practical Use &nbsp;·&nbsp;
+      This is a guided provocation, not a lecture. The framing opens the room — the room provides the content.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       SECTION 1 — OPENING
+  ══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">1</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Opening</div>
+        <div class="sec-title">The Provocation — Before Any Content</div>
+      </div>
+      <div class="sec-timing">~0:00–0:05</div>
+    </div>
+
+    <div class="intent">Goal: break the assumption that everyone in the room means the same thing when they say "AI". Create a productive unsettling before content begins.</div>
+
+    <div class="say">
+      <p>"Before we talk about AI opportunities for the PMO, let's test something simple: when people say 'AI', <strong>are we even talking about the same thing?</strong>"</p>
+    </div>
+
+    <div class="note">Make a real pause here. Let the question sit. A few people will smile — they know where this is going. Others will look slightly unsure. That tension is the point.</div>
+
+    <div class="say">
+      <p>"Most organizations are not failing at AI because they lack ideas. <strong>They fail because they mix together very different things under one label.</strong>"</p>
+    </div>
+
+    <div class="bridge">This opens the door to sorting the terrain — which is the entire job of AI-1 before any use case discussion begins.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       SECTION 2 — WHAT AI IS
+  ══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">2</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Framing</div>
+        <div class="sec-title">Defining AI — Without Sounding Academic</div>
+      </div>
+      <div class="sec-timing">~0:05–0:12</div>
+    </div>
+
+    <div class="intent">Goal: give the room a working definition that's useful, not technical. Then immediately show that "AI" is not one thing.</div>
+
+    <div class="say">
+      <p>"For this session, let's define AI as: <strong>systems that can recognize patterns, interpret inputs, generate outputs, or take actions in ways that normally required more human judgment.</strong>"</p>
+    </div>
+
+    <div class="note">Not academic. Not a textbook. Useful for this room. Emphasize "normally required human judgment" — that's what makes it consequential for PMOs.</div>
+
+    <div class="say">
+      <p>"Not all AI does the same job. Some AI talks. Some AI generates. Some AI coordinates action. And some things we call AI — don't really think at all."</p>
+    </div>
+
+    <div class="bridge">→ This leads directly into the types. Walk them from foundation to frontier.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       SECTION 3 — AI TYPES
+  ══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">3</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Content Core</div>
+        <div class="sec-title">The AI Stack — Foundation to Action</div>
+      </div>
+      <div class="sec-timing">~0:12–0:35</div>
+    </div>
+
+    <div class="intent">Goal: build a shared vocabulary. Walk from ML (the foundation) through to Agentic (the frontier). Use RPA as a contrast to calibrate expectations — not as a main category.</div>
+
+    <!-- ML -->
+    <div class="type-block tb-ml">
+      <div class="tb-header">
+        <span class="tb-chip">Machine Learning</span>
+        <span class="tb-verb">Learns from data — predicts, classifies, detects patterns</span>
+      </div>
+      <div class="tb-desc">This is the foundation. ML models find patterns in historical data and use them to make predictions or decisions. It powers almost everything else — including the models that generate language.</div>
+      <div class="tb-kp">"Think of ML as the engine. Most AI products you use are built on top of ML. It's not magic — it's math applied to large datasets."</div>
+    </div>
+
+    <div class="say">
+      <p>"Machine learning is the intellectual foundation of modern AI. It doesn't follow rules someone programmed. <strong>It learns patterns from data</strong> — and that distinction matters enormously for how you use it."</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- LLMs / Generative -->
+    <div class="type-block tb-gen">
+      <div class="tb-header">
+        <span class="tb-chip">Generative AI / LLMs</span>
+        <span class="tb-verb">Creates content — text, code, summaries, analysis</span>
+      </div>
+      <div class="tb-desc">Large Language Models are ML models trained on massive text corpora using a Transformer architecture — which means they process entire sequences at once instead of word by word. That's why they understand context so well. For PMOs: status reports, risk narratives, executive summaries, minutes, briefings.</div>
+      <div class="tb-kp">"Generating content is useful. But generating content is not the same as creating value."</div>
+    </div>
+
+    <div class="say">
+      <p>"LLMs — Large Language Models — are what most people mean when they say 'AI' today. ChatGPT, Claude, Gemini, Copilot. They are built on a type of architecture called a <strong>Transformer</strong>."</p>
+    </div>
+
+    <div class="say">
+      <p>"The Transformer does one thing very well: it reads an entire context at once — not word by word — and learns which parts of the input are most relevant to each other. That's why these models understand nuance, tone, and intent. <strong>Executively: they are very good at language because they were trained on almost all of the world's written language.</strong>"</p>
+    </div>
+
+    <div class="note">Keep the LLM / Transformer explanation at exactly this level. This audience doesn't need the math — they need the intuition. One sentence on architecture, one on capability, one on relevance to their work. Done.</div>
+
+    <div class="divider"></div>
+
+    <!-- Conversational -->
+    <div class="type-block tb-conv">
+      <div class="tb-header">
+        <span class="tb-chip">Conversational AI</span>
+        <span class="tb-verb">Interacts — receives questions, interprets intent, responds</span>
+      </div>
+      <div class="tb-desc">Chatbots, internal assistants, intake agents, FAQ support for PMs and stakeholders. Often powered by LLMs but optimized for dialogue flow, not generation.</div>
+      <div class="tb-kp">"Conversational AI reduces friction in access to knowledge. It is less about doing the work — more about improving the interface with the work."</div>
+    </div>
+
+    <div class="say">
+      <p>"Think about the experience of having to read a 60-page policy document to find one answer — versus asking a question and getting it in three sentences. <strong>That's the value of conversational AI: it changes the interface, not the underlying knowledge.</strong>"</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Agentic -->
+    <div class="type-block tb-agt">
+      <div class="tb-header">
+        <span class="tb-chip">Agentic AI</span>
+        <span class="tb-verb">Coordinates &amp; acts — plans, uses tools, fires tasks, holds memory</span>
+      </div>
+      <div class="tb-desc">Goes beyond answering or generating. An agent can detect a risk signal, consult multiple sources, propose mitigations, draft a stakeholder message, and trigger a task — all toward a defined goal. Can operate as a single agent or as multi-agent systems with human oversight.</div>
+      <div class="tb-kp">"The more autonomy you want, the more you need clarity, governance, and trust."</div>
+    </div>
+
+    <div class="say">
+      <p>"Agentic AI is the frontier. It doesn't just answer — it <strong>acts</strong>. It can plan a sequence of steps, use tools, keep context between actions, and work toward a goal across time."</p>
+    </div>
+
+    <div class="say">
+      <p>"For PMOs, this is where it gets interesting and where governance matters most. An agent that can flag risks and notify stakeholders is useful. An agent that can also reschedule tasks and draft remediation plans and notify vendors — that requires real oversight design."</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- RPA contrast -->
+    <div class="type-block tb-rpa">
+      <div class="tb-header">
+        <span class="tb-chip">RPA — Robotic Process Automation</span>
+        <span class="tb-verb">Follows rules — executes steps, repeats tasks, automates process</span>
+      </div>
+      <div class="tb-desc">Not AI in the strict sense — but useful. Fast, reliable, cost-effective when the process is clear and stable. Doesn't learn or adapt. Just executes.</div>
+      <div class="tb-kp">"RPA is not the same as AI. Sometimes it's exactly the right tool. Not every problem needs a bazooka."</div>
+    </div>
+
+    <div class="say">
+      <p>"I mention RPA not because it's AI — it isn't, really — but because it's often confused with AI and because it sometimes <em>is</em> the right answer. If the task is repetitive, rule-based, and stable, <strong>RPA will get you there faster, cheaper, and more reliably than most AI approaches.</strong>"</p>
+    </div>
+
+    <div class="say">
+      <p>"The point is this: <strong>the mistake many organizations make is trying to solve every problem with the most exciting form of AI, instead of the most appropriate one.</strong>"</p>
+    </div>
+
+    <div class="summary-box">
+      <div class="sb-label">The Quick Version — Say This in the Room</div>
+      <div class="sb-text">"If I simplify it: Machine Learning learns. Generative AI creates. Conversational AI interacts. Agentic AI coordinates and acts. And RPA just follows instructions — reliably, without drama."</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       SECTION 4 — BEFORE vs NOW
+  ══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">4</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Context Shift</div>
+        <div class="sec-title">AI Then vs. AI Now — Why This Moment Is Different</div>
+      </div>
+      <div class="sec-timing">~0:35–0:45</div>
+    </div>
+
+    <div class="intent">Goal: validate that people have already lived with AI for years — but show that what changed is qualitative, not just quantitative. Elevate ambition without overselling.</div>
+
+    <div class="say">
+      <p>"A few years ago, most people experienced AI as a <strong>convenience layer</strong>: recommendations, recipes, autocomplete, simple chatbots, pattern recognition in narrow tasks. Useful, but limited."</p>
+    </div>
+
+    <div class="say">
+      <p>"What changed is not only model capability. What changed is that now AI can <strong>participate in real work</strong>: understanding context, generating content, supporting judgment, interacting with tools, and in some cases coordinating action."</p>
+    </div>
+
+    <div class="kp">"Before, AI was mostly something you consumed. Now it is becoming something you can <em>design into operating models</em>."</div>
+
+    <div class="note">This phrase is the emotional arc of the session. It takes people from "AI is a feature in my apps" to "AI is a design decision in how my PMO operates." Land it with confidence — don't rush past it.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       SECTION 5 — PMO VALUE FILTER
+  ══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">5</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">PMO Lens</div>
+        <div class="sec-title">From "What Is AI?" to "What Does AI Fix in My PMO?"</div>
+      </div>
+      <div class="sec-timing">~0:45–1:00</div>
+    </div>
+
+    <div class="intent">Goal: anchor the session to PMO-specific value. Don't lecture on PMO theory — use a filter that forces people to connect AI types to real organizational pain.</div>
+
+    <div class="say">
+      <p>"In PMOs, AI does not matter because it is new. It matters <em>if</em> — and only if — it improves one of four things: <strong>clarity, foresight, decision quality, or flow of execution.</strong>"</p>
+    </div>
+
+    <div class="say">
+      <p>"So the question is not 'Where can we use AI?' The better question is: <strong>'Where is our PMO losing time, judgment, visibility, or influence today?'</strong>"</p>
+    </div>
+
+    <div class="note">This is the pivot into the dynamic. Once they have a diagnosis of where pain lives in their own PMO, the 2×2 exercise becomes real — not hypothetical.</div>
+
+    <div class="kp">"The best AI opportunity is not the most impressive use case. It is the one that sits at the intersection of business pain, process readiness, data availability, and adoption reality."</div>
+
+    <div class="bridge">→ This leads into the Value 2×2 dynamic. Tables now map their own AI ideas onto Value vs. Readiness axes.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       SECTION 6 — DYNAMICS
+  ══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">6</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Dynamics</div>
+        <div class="sec-title">Value 2×2 → CEO Challenge</div>
+      </div>
+      <div class="sec-timing">~1:00–1:30 + post-break</div>
+    </div>
+
+    <div class="intent">Goal: move from concepts to positions. The 2×2 surfaces the gap between enthusiasm and readiness. The CEO Challenge forces execution-grade clarity.</div>
+
+    <div class="say">
+      <p>"I want each table to place your AI ideas on two axes. The first axis: <strong>business value</strong> — how meaningfully does this move the needle for the PMO? The second: <strong>readiness</strong> — do we actually have the process clarity, data, ownership, and sponsorship to execute this now?"</p>
+    </div>
+
+    <div class="kp">"An AI idea is not strong because it sounds smart. It is strong if the organization can actually adopt it."</div>
+
+    <div class="note">Let tables work for 10–12 minutes. As you circulate, push back on ideas in the high-value/high-readiness quadrant: "What makes you confident on readiness? What's the data story here? Who owns this?" You want to surface hidden assumptions, not validate easy answers.</div>
+
+    <div class="divider"></div>
+
+    <div class="say">
+      <p>"Now imagine your CFO or CEO says: <em>'Fine. You have budget for one AI move this year. Why this one?'</em>"</p>
+    </div>
+
+    <div class="note">Post-break framing. This single question changes the energy in the room. Before the break, people were enthusiastic. After this question, they need to justify, prioritize, and defend. That tension is the value of the second half.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       SECTION 7 — CLOSE
+  ══════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">7</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Close</div>
+        <div class="sec-title">Session Close + Bridge to AI-4</div>
+      </div>
+      <div class="sec-timing">Final ~15 min</div>
+    </div>
+
+    <div class="intent">Goal: convergence, not summary. Pull 3–5 insights from the room. Close with a filter — not a conclusion. Leave them wanting the roadmap conversation.</div>
+
+    <div class="say">
+      <p>"Today is not about leaving with all the answers. It's about leaving with a <strong>better filter</strong>. Not every AI idea is valuable — and not every valuable idea is ready."</p>
+    </div>
+
+    <div class="say">
+      <p>"AI is not the strategy. It is an enabler <em>inside</em> a strategy. The organizations that will move well on this are the ones that start by getting clear on where the real pain lives — not the ones that buy the most tools."</p>
+    </div>
+
+    <div class="kp">"The biggest risk is not moving too slowly. It's moving <em>noisily</em> — without value logic."</div>
+
+    <div class="bridge">→ Bridge to AI-4: "Once you know the difference between ML, generative, conversational, and agentic AI, the next executive question is inevitable: <em>So what do we do first?</em> That's exactly what Session AI-4 is built to answer."</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       PHRASE BANK
+  ══════════════════════════════════════════════════ -->
+  <div class="section page-break">
+    <div class="sec-header">
+      <div class="sec-num">✦</div>
+      <div class="sec-label-wrap">
+        <div class="sec-tag">Quick Reference</div>
+        <div class="sec-title">All Key Phrases — Capture &amp; Reuse</div>
+      </div>
+    </div>
+    <div class="intent">These are the phrases worth landing verbatim, or close to it. Each one carries a specific weight — keep them sharp.</div>
+
+    <div class="phrase-bank" style="margin-top:1rem;">
+      <div class="pb-item">"When people say 'AI', are we even talking about the same thing?"</div>
+      <div class="pb-item">"Most organizations fail at AI not because they lack ideas. They fail because they mix very different things under one label."</div>
+      <div class="pb-item">"AI = systems that can recognize patterns, interpret inputs, generate outputs, or take actions in ways that normally required more human judgment."</div>
+      <div class="pb-item">"Not all AI does the same job. Some AI talks, some generates, some automates, and some coordinates action."</div>
+      <div class="pb-item">"ML learns from data. Generative AI creates. Conversational AI interacts. Agentic AI coordinates and acts."</div>
+      <div class="pb-item">"LLMs are very good at language because they were trained on almost all of the world's written language."</div>
+      <div class="pb-item">"Transformer architecture: it reads an entire context at once — that's why these models understand nuance and intent."</div>
+      <div class="pb-item">"Generating content is useful. But generating content is not the same as creating value."</div>
+      <div class="pb-item">"Conversational AI reduces friction in access to knowledge. Less about doing the work — more about improving the interface with the work."</div>
+      <div class="pb-item">"The more autonomy you want, the more you need clarity, governance, and trust."</div>
+      <div class="pb-item">"RPA is not AI. Sometimes it's exactly the right tool. Not every problem needs a bazooka."</div>
+      <div class="pb-item">"The mistake: solving every problem with the most exciting form of AI instead of the most appropriate one."</div>
+      <div class="pb-item">"A few years ago, AI was a convenience layer. Now AI can participate in real work."</div>
+      <div class="pb-item">"Before, AI was mostly something you consumed. Now it is becoming something you can design into operating models."</div>
+      <div class="pb-item">"In PMOs, AI matters if it improves: clarity, foresight, decision quality, or flow of execution."</div>
+      <div class="pb-item">"The better question: 'Where is our PMO losing time, judgment, visibility, or influence today?'"</div>
+      <div class="pb-item">"The best opportunity sits at the intersection of: business pain · process readiness · data availability · adoption reality."</div>
+      <div class="pb-item">"An AI idea is not strong because it sounds smart. It's strong if the organization can actually adopt it."</div>
+      <div class="pb-item">"AI is not the strategy. It is an enabler inside a strategy."</div>
+      <div class="pb-item">"The biggest risk is not moving too slowly. It's moving noisily — without value logic."</div>
+      <div class="pb-item">"Today is not about leaving with all the answers. It's about leaving with a better filter."</div>
+      <div class="pb-item">"Once you know the difference between the AI types, the next question is inevitable: So what do we do first?"</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
