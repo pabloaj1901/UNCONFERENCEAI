@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-1 · Guion de Facilitación · Pablo Jimeno</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --surface2: #1c1c1c;
+    --border: #2a2a2a;
+    --amber: #f5a623;
+    --amber-dim: rgba(245,166,35,0.12);
+    --blue: #4a9eff;
+    --blue-dim: rgba(74,158,255,0.10);
+    --green: #3ecf8e;
+    --green-dim: rgba(62,207,142,0.10);
+    --orange: #ff7043;
+    --orange-dim: rgba(255,112,67,0.10);
+    --red: #ff4757;
+    --red-dim: rgba(255,71,87,0.10);
+    --ink1: #f0f0f0;
+    --ink2: #aaaaaa;
+    --ink3: #666666;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink1);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 48px 28px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+  .doc-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .doc-subtitle {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink3);
+    letter-spacing: 0.04em;
+  }
+  .doc-tag {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink3);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .doc-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 48px 80px;
+  }
+
+  /* ── SLIDE BLOCK ── */
+  .slide-block {
+    margin-bottom: 56px;
+    border-left: 3px solid var(--border);
+    padding-left: 28px;
+    position: relative;
+  }
+  .slide-block:hover {
+    border-left-color: var(--amber);
+  }
+
+  /* Color variants */
+  .slide-block.amber  { border-left-color: var(--amber); }
+  .slide-block.blue   { border-left-color: var(--blue); }
+  .slide-block.green  { border-left-color: var(--green); }
+  .slide-block.orange { border-left-color: var(--orange); }
+  .slide-block.red    { border-left-color: var(--red); }
+  .slide-block.dim    { border-left-color: var(--border); opacity: 0.75; }
+
+  /* ── SLIDE META ── */
+  .slide-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .slide-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink3);
+    min-width: 28px;
+  }
+  .slide-id {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--ink3);
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .slide-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 2px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .badge-holding   { background: rgba(255,255,255,0.05); color: var(--ink3); }
+  .badge-icebreak  { background: var(--amber-dim); color: var(--amber); }
+  .badge-admin     { background: var(--blue-dim); color: var(--blue); }
+  .badge-dynamic   { background: var(--orange-dim); color: var(--orange); }
+  .badge-content   { background: var(--blue-dim); color: var(--blue); }
+  .badge-moment    { background: var(--red-dim); color: var(--red); }
+  .badge-survey    { background: var(--amber-dim); color: var(--amber); }
+  .badge-break     { background: var(--green-dim); color: var(--green); }
+  .badge-synthesis { background: var(--green-dim); color: var(--green); }
+  .slide-time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink3);
+  }
+
+  /* ── SLIDE TITLE ── */
+  .slide-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink1);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .slide-purpose {
+    font-size: 13px;
+    color: var(--ink3);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 18px;
+  }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── SPEECH BLOCK ── */
+  .speech {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+  }
+  .speech p {
+    color: var(--ink1);
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .speech p:last-child { margin-bottom: 0; }
+
+  /* Key phrase — highlight */
+  .speech .key {
+    color: var(--amber);
+    font-weight: 600;
+  }
+  .speech .key-blue { color: var(--blue); font-weight: 600; }
+  .speech .key-green { color: var(--green); font-weight: 600; }
+  .speech .key-orange { color: var(--orange); font-weight: 600; }
+
+  /* Pause marker */
+  .pause {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink3);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 7px;
+    border-radius: 2px;
+    margin: 2px 0;
+    vertical-align: middle;
+  }
+
+  /* ── NOTES BLOCK ── */
+  .notes {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+  }
+  .notes ul {
+    padding-left: 16px;
+  }
+  .notes li {
+    color: var(--ink2);
+    font-size: 13.5px;
+    margin-bottom: 5px;
+    line-height: 1.6;
+  }
+  .notes li:last-child { margin-bottom: 0; }
+  .notes p {
+    color: var(--ink2);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  /* ── KEY PHRASE CALLOUT ── */
+  .keyphrase {
+    border-left: 3px solid var(--amber);
+    background: var(--amber-dim);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--amber);
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .keyphrase.blue   { border-color: var(--blue); background: var(--blue-dim); color: var(--blue); }
+  .keyphrase.green  { border-color: var(--green); background: var(--green-dim); color: var(--green); }
+  .keyphrase.orange { border-color: var(--orange); background: var(--orange-dim); color: var(--orange); }
+
+  /* ── DIVIDER ── */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-bottom: 56px;
+  }
+  .toc-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 18px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 6px 16px;
+  }
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink2);
+    text-decoration: none;
+    padding: 3px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s;
+  }
+  .toc-item:hover { color: var(--amber); }
+  .toc-n {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink3);
+    min-width: 20px;
+  }
+
+  /* ── SEPARATOR LABEL ── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 32px;
+  }
+  .section-divider span {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    white-space: nowrap;
+  }
+  .section-divider::before,
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  @media print {
+    body { background: white; color: black; font-size: 12px; }
+    .doc-header { position: static; background: white; border-bottom: 2px solid #ccc; }
+    .slide-block { page-break-inside: avoid; }
+    .speech { background: #f9f9f9; border-color: #ddd; }
+    .notes { background: #f0f0f0; border-color: #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-title">AI-1 · Guion de Facilitación</div>
+  <div class="doc-subtitle">Pablo Jimeno · PMO unCON 2026 · San Diego</div>
+  <div class="doc-tag">28 slides · 8:30 AM – 12:30 PM</div>
+</header>
+
+<div class="doc-body">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">Índice rápido</div>
+    <div class="toc-grid">
+      <a href="#s01" class="toc-item"><span class="toc-n">01</span> a0 · Holding</a>
+      <a href="#s02" class="toc-item"><span class="toc-n">02</span> b0 · Icebreaker</a>
+      <a href="#s03" class="toc-item"><span class="toc-n">03</span> a2 · Team</a>
+      <a href="#s04" class="toc-item"><span class="toc-n">04</span> a1 · unCON format</a>
+      <a href="#s05" class="toc-item"><span class="toc-n">05</span> a3 · Agenda</a>
+      <a href="#s06" class="toc-item"><span class="toc-n">06</span> d1 · Opening provocation</a>
+      <a href="#s07" class="toc-item"><span class="toc-n">07</span> b1 · Survey</a>
+      <a href="#s08" class="toc-item"><span class="toc-n">08</span> d2 · Table activation</a>
+      <a href="#s09" class="toc-item"><span class="toc-n">09</span> sv1 · PMO value moment</a>
+      <a href="#s10" class="toc-item"><span class="toc-n">10</span> d3 · AI types framing</a>
+      <a href="#s11" class="toc-item"><span class="toc-n">11</span> s0 · What is AI</a>
+      <a href="#s12" class="toc-item"><span class="toc-n">12</span> s1 · Why now</a>
+      <a href="#s13" class="toc-item"><span class="toc-n">13</span> s1b · MMLU chart</a>
+      <a href="#s14" class="toc-item"><span class="toc-n">14</span> s2 · Predictive AI</a>
+      <a href="#s15" class="toc-item"><span class="toc-n">15</span> s3 · Generative AI</a>
+      <a href="#s16" class="toc-item"><span class="toc-n">16</span> s4 · Conversational AI</a>
+      <a href="#s17" class="toc-item"><span class="toc-n">17</span> s5 · Agentic AI</a>
+      <a href="#s18" class="toc-item"><span class="toc-n">18</span> s6 · RPA</a>
+      <a href="#s19" class="toc-item"><span class="toc-n">19</span> s7 · Summary table</a>
+      <a href="#s20" class="toc-item"><span class="toc-n">20</span> d4 · Value × Readiness</a>
+      <a href="#s21" class="toc-item"><span class="toc-n">21</span> d5 · Pre-break tension</a>
+      <a href="#s22" class="toc-item"><span class="toc-n">22</span> e0 · Break</a>
+      <a href="#s23" class="toc-item"><span class="toc-n">23</span> f1 · Re-entry</a>
+      <a href="#s24" class="toc-item"><span class="toc-n">24</span> f2 · Selection criteria</a>
+      <a href="#s25" class="toc-item"><span class="toc-n">25</span> f3 · Executive pressure</a>
+      <a href="#s26" class="toc-item"><span class="toc-n">26</span> f4 · Table readout</a>
+      <a href="#s27" class="toc-item"><span class="toc-n">27</span> f5 · Convergence</a>
+      <a href="#s28" class="toc-item"><span class="toc-n">28</span> g0 · Closing survey</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>Pre-sesión · 8:30 AM</span></div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide-block dim" id="s01">
+    <div class="slide-meta">
+      <span class="slide-num">01</span>
+      <span class="slide-id">a0</span>
+      <span class="slide-badge badge-holding">Holding</span>
+      <span class="slide-time">8:30 – 9:00 AM · Video institucional en pantalla</span>
+    </div>
+    <div class="slide-title">Holding — sala llenándose</div>
+    <div class="slide-purpose">No das contenido. Solo energía de llegada y presencia en sala.</div>
+
+    <div class="section">
+      <div class="section-label">Si necesitas romper el silencio</div>
+      <div class="speech">
+        <p>"Good morning everyone, welcome. We'll get started in just a moment."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Notas</div>
+      <div class="notes">
+        <ul>
+          <li>El video institucional corre hasta las 9:00 AM. No compitas con él.</li>
+          <li>Usa este tiempo para ubicarte en sala, confirmar que Menti está activo, y saludar mesas.</li>
+          <li>No hagas setup de contenido. La energía importa más que las palabras aquí.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide-block amber" id="s02">
+    <div class="slide-meta">
+      <span class="slide-num">02</span>
+      <span class="slide-id">b0</span>
+      <span class="slide-badge badge-icebreak">Icebreaker</span>
+      <span class="slide-time">~8:45 AM · Mientras llega gente</span>
+    </div>
+    <div class="slide-title">Let's meet the room</div>
+    <div class="slide-purpose">Activas la sala antes de que empiece la sesión formal. Las 4 preguntas ya están en pantalla.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir para lanzarlo</div>
+      <div class="speech">
+        <p>"Before we start, take a moment and answer these on your phone. I want to see who's in the room — where you're from, what industries are represented, and just as importantly — what comes to mind when you hear the word AI."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Remate cuando lleguen respuestas</div>
+      <div class="speech">
+        <p>"Look at this already."</p>
+        <p>"We're not even started — and we already have our first signal: <span class="key">we do not all walk into this room with the same picture in our heads.</span>"</p>
+        <p>"That tension is exactly where this conversation begins."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Notas</div>
+      <div class="notes">
+        <ul>
+          <li>No leas cada respuesta. Observa el patrón y coméntalo en voz alta.</li>
+          <li>Si hay variedad en la pregunta de AI: "Some say tools. Some say risk. Some say opportunity. Already interesting."</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>Apertura formal · 9:00 AM</span></div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide-block" id="s03">
+    <div class="slide-meta">
+      <span class="slide-num">03</span>
+      <span class="slide-id">a2</span>
+      <span class="slide-badge badge-admin">Admin</span>
+      <span class="slide-time">9:00 AM · ~1 min</span>
+    </div>
+    <div class="slide-title">Team — presentación del equipo</div>
+    <div class="slide-purpose">Breve. Establece que hay un equipo, no un presentador solitario.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Very quickly — this is the facilitation team supporting today's session."</p>
+        <p>"Luis, Ralf, and I are leading. Don, Nagendra, and Olga are in the room with you — they'll be moving table to table during the discussions."</p>
+        <p>"We're here to guide the conversation. Not to dominate it."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide-block blue" id="s04">
+    <div class="slide-meta">
+      <span class="slide-num">04</span>
+      <span class="slide-id">a1</span>
+      <span class="slide-badge badge-admin">Formato</span>
+      <span class="slide-time">9:01 AM · ~2 min</span>
+    </div>
+    <div class="slide-title">About this session — el espíritu unCON</div>
+    <div class="slide-purpose">Reseteas expectativas. Mucha gente llega en modo audiencia. Necesitas sacarlos de eso rápido.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"This is not a presentation in the traditional sense."</p>
+        <p>"PMO unCON is built around what happens when experienced professionals get in the same room and start comparing realities — what works, what breaks, what's changing."</p>
+        <p>"The expertise is not up here. <span class="key">It's distributed across this room.</span>"</p>
+        <p>"So: speak from experience. Make space for others. Challenge ideas — not people."</p>
+        <p>"At PMO unCON — <span class="key">the community is not the audience. The community is the content.</span>"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide-block" id="s05">
+    <div class="slide-meta">
+      <span class="slide-num">05</span>
+      <span class="slide-id">a3</span>
+      <span class="slide-badge badge-admin">Agenda</span>
+      <span class="slide-time">9:03 AM · ~2 min</span>
+    </div>
+    <div class="slide-title">Session agenda — el mapa del día</div>
+    <div class="slide-purpose">Orientas, no lees. La gente necesita saber dónde está parada y adónde va.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Here's the flow for the morning."</p>
+        <p>"We'll spend the first half exploring: what AI actually is, why this moment feels different, and what kinds of AI opportunities exist for the PMO. That gives us a shared language."</p>
+        <p>"After the break, the conversation changes. We move from exploring to defending. One idea, real criteria, executive pressure."</p>
+        <p>"This morning is really about one thing: <span class="key">separating interesting AI ideas from opportunities that are actually defensible.</span>"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>Apertura de contenido · 9:05 AM</span></div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide-block amber" id="s06">
+    <div class="slide-meta">
+      <span class="slide-num">06</span>
+      <span class="slide-id">d1</span>
+      <span class="slide-badge badge-moment">Opening provocation</span>
+      <span class="slide-time">9:05 AM · ~10 min · ① en la slide</span>
+    </div>
+    <div class="slide-title">Tu opening fuerte — te presentas y provocas</div>
+    <div class="slide-purpose">Este es tu momento. Estableces autoridad, calibras el tono, y lanzas la pregunta que enmarca todo lo que viene.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Good morning everyone."</p>
+        <p>"It's a real pleasure to be here — in a room full of experience, different industries, different perspectives."</p>
+        <p>"My name is Pablo Jimeno. I'm from Medellín, Colombia — yes, you're all welcome to visit."</p>
+        <p>"I work at Concentrix, where we manage over 1,500 projects a year globally. My role sits right at the intersection of PMO, data, and AI transformation."</p>
+        <p>"But before we go any further — I want to pause."</p>
+        <p>"Because we're living in a very strange moment."</p>
+        <p>"We are probably <span class="key">the last generation that experienced life before AI</span>… and the first one trying to figure out life with it."</p>
+        <p>"Every week, something new comes out. New tools. New models. New promises."</p>
+        <p>"It's exciting. It's overwhelming. And sometimes — it's just noise."</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"The slide behind me says something I believe: <span class="key">the PMOs that will lead are not the ones that know the most about AI.</span>"</p>
+        <p>"They're the ones that ask the right questions first."</p>
+        <p>"So instead of starting with answers — let's start with the question on this slide:"</p>
+        <p><span class="key">"What does AI actually mean in your organization right now?"</span></p>
+        <p><span class="pause">pausa real — deja que respiren</span></p>
+        <p>"Because the moment we ask that question, most people realize they don't have a clean answer."</p>
+        <p>"And that is exactly where this conversation starts."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Notas</div>
+      <div class="notes">
+        <ul>
+          <li>No apresures la pausa después de la pregunta. Deja que aterrice.</li>
+          <li>Si alguien responde en voz alta — bien. Escucha y di "exactly" o "that's interesting." No desarrolles. La discusión viene en la siguiente slide.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide-block amber" id="s07">
+    <div class="slide-meta">
+      <span class="slide-num">07</span>
+      <span class="slide-id">b1</span>
+      <span class="slide-badge badge-survey">Survey</span>
+      <span class="slide-time">9:10 AM · ~5 min</span>
+    </div>
+    <div class="slide-title">Opening Survey — una pregunta honesta</div>
+    <div class="slide-purpose">Antes de dar cualquier marco, quieres la experiencia real del room. Esto también alimenta la activación de mesa que sigue.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir para lanzarlo</div>
+      <div class="speech">
+        <p>"Before we define anything — I want one honest answer from the room."</p>
+        <p>"The question is on screen. One AI use case you've seen or seriously considered for your PMO. And was it worth it?"</p>
+        <p>"Just a word, a phrase, a short sentence. No vendor pitch. What you've actually seen."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Mientras llegan respuestas</div>
+      <div class="speech">
+        <p>"Look at the spread."</p>
+        <p>"Some of these are about reporting. Some about automation. Some about risk. Some about knowledge access."</p>
+        <p>"And that's already the point: <span class="key">we use one label — AI — for very different things.</span>"</p>
+        <p>"That's exactly the confusion we're going to cut through this morning."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide-block orange" id="s08">
+    <div class="slide-meta">
+      <span class="slide-num">08</span>
+      <span class="slide-id">d2</span>
+      <span class="slide-badge badge-dynamic">Dynamic ②</span>
+      <span class="slide-time">9:15 AM · 20 min · Table activation</span>
+    </div>
+    <div class="slide-title">Share a real use case — activación de mesa</div>
+    <div class="slide-purpose">Primera discusión en mesa. Anclas en experiencia real antes de entrar a cualquier teoría.</div>
+
+    <div class="section">
+      <div class="section-label">Instrucciones para la mesa</div>
+      <div class="speech">
+        <p>"Alright — at your table, here's what I want."</p>
+        <p>"Each person: one AI use case. From your org, or from a source you know directly — not something you read in a press release."</p>
+        <p>"For each one: what problem was it solving, what actually happened, and would you recommend it — yes or no."</p>
+        <p>"Aim for 4 to 6 use cases per table. Designate a scribe. Keep it real."</p>
+        <p>"Last 5 minutes: identify the one use case that surprised your table the most — positively or negatively. That's what you'll share with the room."</p>
+        <p>"You have 20 minutes. Go."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Mientras caminas por las mesas</div>
+      <div class="notes">
+        <ul>
+          <li>Escucha sin intervenir las primeras rondas. Deja que fluya.</li>
+          <li>Si una mesa está atascada: "What's the most recent thing your team tried — even informally?"</li>
+          <li>Si alguien menciona algo interesante: "Remember that one — it'll be useful when we get to the mapping exercise."</li>
+          <li>No dejes que una mesa se quede en teoría. Empuja hacia lo concreto: "Did you actually try it or are we still in 'we're thinking about it' territory?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Al cerrar — cosecha rápida</div>
+      <div class="speech">
+        <p>"Let's hear the room quickly. One use case per table — the one that surprised you most. Keep it to 30 seconds."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide-block red" id="s09">
+    <div class="slide-meta">
+      <span class="slide-num">09</span>
+      <span class="slide-id">sv1</span>
+      <span class="slide-badge badge-moment">Momento de provocación</span>
+      <span class="slide-time">~9:35 AM · 5 min · Tu slide personal</span>
+    </div>
+    <div class="slide-title">PMO Value — te plantas y dices algo incómodo</div>
+    <div class="slide-purpose">Esta slide es tuya. No es facilitation neutral — es tu punto de vista, dicho con convicción. Viene justo después de escuchar los use cases, así que tienes material fresco del room para conectar.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Let me raise the level for a second."</p>
+        <p>"We just heard a lot of use cases. Some worked. Some didn't."</p>
+        <p>"And I want to say something that might be uncomfortable:"</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"<span class="key">If your PMO is not growing — it's your fault.</span>"</p>
+        <p>"Not the tools. Not the budget. Not the executive who doesn't get it."</p>
+        <p>"The slide behind me says: act as a seller. Own the story of your value. Speak executive language, not deliverable language."</p>
+        <p>"Because here's the truth: <span class="key">AI does not matter to the C-level because it's new.</span>"</p>
+        <p>"It matters only if it solves a pain they actually feel."</p>
+        <p>"And if you can't name that pain — in their language — no AI use case will land."</p>
+        <p>"So before we talk about which AI to use — the real question is: <span class="key">what does leadership actually value in your organization right now?</span>"</p>
+        <p>"Because that's your starting point. Not the technology."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Notas</div>
+      <div class="notes">
+        <ul>
+          <li>Este momento necesita calma y convicción. No lo apresures.</li>
+          <li>Si hay incomodidad visible en sala — bien. Eso es lo que buscas.</li>
+          <li>No pidas respuestas aquí. Deja que aterrice y pasa a d3 con energía.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="keyphrase">"Interesting is not enough. Defendable is better."</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>Marco conceptual · 9:40 AM</span></div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide-block blue" id="s10">
+    <div class="slide-meta">
+      <span class="slide-num">10</span>
+      <span class="slide-id">d3</span>
+      <span class="slide-badge badge-content">Framing</span>
+      <span class="slide-time">9:40 AM · ~2 min · puente</span>
+    </div>
+    <div class="slide-title">Bridge — antes de los AI types</div>
+    <div class="slide-purpose">Breve transición. Preparas al room para el bloque de contenido que viene.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"So before we can judge whether an AI opportunity is strong or weak — we need a common language."</p>
+        <p>"Because if we don't separate the types of AI, we end up mixing very different tools, very different risks, and very different expectations."</p>
+        <p>"We're going to walk through five types — briefly. Not a lecture. Just enough so that when you're mapping your ideas in the next exercise, you can call them by the right name."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11 -->
+  <div class="slide-block blue" id="s11">
+    <div class="slide-meta">
+      <span class="slide-num">11</span>
+      <span class="slide-id">s0</span>
+      <span class="slide-badge badge-content">Contenido</span>
+      <span class="slide-time">9:42 AM · ~3 min</span>
+    </div>
+    <div class="slide-title">What is AI — definición de trabajo</div>
+    <div class="slide-purpose">Das una definición útil, no académica. El punto clave es que AI no es una cosa — es una familia.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"For this session — one working definition."</p>
+        <p>"AI is: <span class="key-blue">systems that recognize patterns, generate outputs, and take actions — in ways that once required human judgment.</span>"</p>
+        <p>"No textbook definition. Just a useful one."</p>
+        <p>"But notice what the slide says: <span class="key">AI is not one thing. It's a family of approaches.</span> Each suited to different kinds of problems."</p>
+        <p>"And here's the part that trips people up: <span class="key">not everything called AI actually learns.</span> The label is used loosely. The differences are not."</p>
+        <p>"For a PMO — the question is not 'should we use AI.' It's: which type, for which problem, right now."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12 -->
+  <div class="slide-block blue" id="s12">
+    <div class="slide-meta">
+      <span class="slide-num">12</span>
+      <span class="slide-id">s1</span>
+      <span class="slide-badge badge-content">Contenido</span>
+      <span class="slide-time">9:45 AM · ~4 min</span>
+    </div>
+    <div class="slide-title">Why Now — la línea de tiempo</div>
+    <div class="slide-purpose">Explicas el salto. La gente necesita entender por qué esto se siente diferente ahora versus hace 5 años.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"AI is not new."</p>
+        <p>"We've had recommendation engines, forecasting models, scoring models, chatbots, and automation for years."</p>
+        <p>"So why does this moment feel so different?"</p>
+        <p>"Look at the timeline on screen. 2017 — the transformer architecture. That's the engine behind everything that follows."</p>
+        <p>"2020 — GPT-3. AI finally understands context at scale."</p>
+        <p>"2022 — ChatGPT. 100 million users in 60 days. Nothing in the history of technology moved that fast."</p>
+        <p>"2023 — GPT-4 scores in the top 10% of the bar exam. GPT-3.5 was in the bottom 10%. One year earlier."</p>
+        <p>"And 2025 — it's already inside the tools your teams use every day."</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"For a long time, AI mostly helped in the background. <span class="key">Now it can participate in visible work.</span>"</p>
+        <p>"Before, AI was mostly something you consumed. Now — it's becoming something you can design into how work gets done."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13 -->
+  <div class="slide-block blue" id="s13">
+    <div class="slide-meta">
+      <span class="slide-num">13</span>
+      <span class="slide-id">s1b</span>
+      <span class="slide-badge badge-content">Contenido</span>
+      <span class="slide-time">9:49 AM · ~3 min</span>
+    </div>
+    <div class="slide-title">MMLU chart — el salto visual</div>
+    <div class="slide-purpose">Un número que aterriza la velocidad del cambio. No lo conviertes en clase de benchmarking — lo usas para hacer un punto sobre velocidad.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Let me show you why this shift feels so dramatic."</p>
+        <p>"This chart measures MMLU — a broad benchmark that tests how well a model performs across many knowledge and reasoning domains. Science, law, history, math, general problem-solving."</p>
+        <p>"It's not measuring whether the model sounds fluent. It's measuring whether it can handle cognitively demanding tasks across a wide range."</p>
+        <p>"GPT-3: around 40."</p>
+        <p>"GPT-4: around 86."</p>
+        <p>"Human expert threshold: 89.8."</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"That does not mean the model is 'almost human' in every sense."</p>
+        <p>"But it means something very important: <span class="key">in a short period of time, these systems moved from impressive language tools to genuinely competitive on a wide range of reasoning-heavy tasks.</span>"</p>
+        <p>"And by 2024–2026 — dozens of models from multiple labs cross the 80-plus threshold."</p>
+        <p>"<span class="key">Most organizations didn't miss AI. They missed how fast it became usable.</span>"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>AI Types · 9:52 AM</span></div>
+
+  <!-- SLIDE 14 -->
+  <div class="slide-block blue" id="s14">
+    <div class="slide-meta">
+      <span class="slide-num">14</span>
+      <span class="slide-id">s2</span>
+      <span class="slide-badge badge-content">AI Type 1/5</span>
+      <span class="slide-time">9:52 AM · ~3 min</span>
+    </div>
+    <div class="slide-title">Predictive AI — patrones hacia el futuro</div>
+    <div class="slide-purpose">El tipo más silencioso y más valioso para el PMO. Muchos ya lo usan sin llamarlo AI.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Type one: Predictive AI."</p>
+        <p>"This is the foundation. It learns patterns from historical data to estimate what's likely to happen next."</p>
+        <p>"It doesn't follow rules the way automation does. <span class="key-blue">It finds signals in past data before they show up on anyone's radar.</span>"</p>
+        <p>"For a PMO: imagine a system that flags a project as at-risk before any PM raises their hand. That's predictive AI."</p>
+        <p>"The watch-out is on screen: <span class="key">garbage in, garbage out.</span> Weak or limited historical data produces weak predictions. This one only works if your data is clean enough."</p>
+        <p>"When does it fit? When you have historical project data, patterns that repeat across projects, and volume too high to monitor manually."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15 -->
+  <div class="slide-block blue" id="s15">
+    <div class="slide-meta">
+      <span class="slide-num">15</span>
+      <span class="slide-id">s3</span>
+      <span class="slide-badge badge-content">AI Type 2/5</span>
+      <span class="slide-time">9:55 AM · ~3 min</span>
+    </div>
+    <div class="slide-title">Generative AI — contenido desde instrucciones</div>
+    <div class="slide-purpose">Lo que la mayoría tiene en mente cuando dice "AI" hoy. Importante separar fluidez de precisión.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Type two: Generative AI."</p>
+        <p>"This is what most people mean today when they say AI. It creates content — text, summaries, drafts, emails, plans — from natural language instructions."</p>
+        <p>"For a PMO: drafting status reports, turning meeting notes into executive summaries, synthesizing updates from multiple projects."</p>
+        <p>"The watch-out is critical: <span class="key">fluent output can still be wrong.</span> These models sound confident even when they're not accurate. Always review before sending."</p>
+        <p>"And this one I'll say clearly: <span class="key">generating content is not the same as creating value.</span> The question is always — does the output move something that matters?"</p>
+        <p>"When does it fit? When unstructured input needs to become structured output, and the first draft is the real bottleneck."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 16 -->
+  <div class="slide-block blue" id="s16">
+    <div class="slide-meta">
+      <span class="slide-num">16</span>
+      <span class="slide-id">s4</span>
+      <span class="slide-badge badge-content">AI Type 3/5</span>
+      <span class="slide-time">9:58 AM · ~2 min</span>
+    </div>
+    <div class="slide-title">Conversational AI — diálogo natural</div>
+    <div class="slide-purpose">Más cercano al día a día de los equipos. El riesgo menos obvio: la fluidez del diálogo esconde profundidad superficial.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Type three: Conversational AI."</p>
+        <p>"Designed to respond through chat or voice in a back-and-forth exchange. It feels like a conversation because it is one."</p>
+        <p>"For a PMO: a project assistant that answers questions, gives status updates, and guides people — in plain language, 24/7."</p>
+        <p>"The watch-out: <span class="key">good dialogue can hide shallow understanding.</span> The answer sounds right, sounds fluent — but verify anything critical before acting on it."</p>
+        <p>"When does it fit? When information exists but is hard to navigate, and repetitive questions are consuming team time."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17 -->
+  <div class="slide-block blue" id="s17">
+    <div class="slide-meta">
+      <span class="slide-num">17</span>
+      <span class="slide-id">s5</span>
+      <span class="slide-badge badge-content">AI Type 4/5</span>
+      <span class="slide-time">10:00 AM · ~2 min</span>
+    </div>
+    <div class="slide-title">Agentic AI — acción autónoma multi-paso</div>
+    <div class="slide-purpose">El más poderoso y el más exigente en términos de governance. Introduce la idea de control como prerequisito.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Type four: Agentic AI."</p>
+        <p>"This one doesn't wait to be asked. It plans, acts, and coordinates across systems — autonomously."</p>
+        <p>"For a PMO: gathering updates from multiple sources, consolidating them, flagging risks, routing actions — without a human orchestrating each step."</p>
+        <p>"The watch-out is the most important one in this list: <span class="key">weak controls create errors nobody intended.</span> The more autonomous the system, the more important the guardrails."</p>
+        <p>"This is not a tool you deploy and forget. It requires clear ownership, explicit boundaries, and someone with authority to say 'this is mine and I'm watching it.'"</p>
+        <p>"When does it fit? When multi-step workflows run on schedule, coordination spans multiple systems, and human orchestration has become the bottleneck."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 18 -->
+  <div class="slide-block blue" id="s18">
+    <div class="slide-meta">
+      <span class="slide-num">18</span>
+      <span class="slide-id">s6</span>
+      <span class="slide-badge badge-content">AI Type 5/5</span>
+      <span class="slide-time">10:02 AM · ~2 min</span>
+    </div>
+    <div class="slide-title">RPA — automatización de reglas fijas</div>
+    <div class="slide-purpose">La herramienta más madura y más frágil. Importante ser honesto: RPA no aprende.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Type five: RPA — Robotic Process Automation."</p>
+        <p>"This one is different from the others. <span class="key">RPA does not learn. It follows fixed rules across systems — the same steps, every time.</span>"</p>
+        <p>"For a PMO: moving data between systems, assembling standard reports, same structure every cycle."</p>
+        <p>"The watch-out says everything: <span class="key">process changes break the automation immediately.</span> It knows one path. Change a step — it fails."</p>
+        <p>"So RPA is powerful and brittle at the same time. It earns its place when the rules are fixed, the data is structured, and the process is stable and well-documented."</p>
+        <p>"Many PMOs already use this — sometimes without calling it AI."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 19 -->
+  <div class="slide-block blue" id="s19">
+    <div class="slide-meta">
+      <span class="slide-num">19</span>
+      <span class="slide-id">s7</span>
+      <span class="slide-badge badge-content">Summary</span>
+      <span class="slide-time">10:04 AM · ~2 min</span>
+    </div>
+    <div class="slide-title">The 5 AI types — tabla comparativa</div>
+    <div class="slide-purpose">Sintetizas y preparas el salto al ejercicio de mapeo. La tabla está en pantalla — no la lees, la usas.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Here's the one-page view."</p>
+        <p>"Five types. Five different jobs. Five different watch-outs."</p>
+        <p>"This is your reference for the next exercise — because when you place your use cases on the map, I want you to name which type you're talking about."</p>
+        <p>"Not because the label matters for its own sake — but because <span class="key">different types require different readiness conditions.</span> Predictive needs clean historical data. Agentic needs governance. RPA needs stable processes."</p>
+        <p>"Knowing the type tells you what you actually need to have in place before you move."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>Dynamic 1 · 10:05 AM</span></div>
+
+  <!-- SLIDE 20 -->
+  <div class="slide-block orange" id="s20">
+    <div class="slide-meta">
+      <span class="slide-num">20</span>
+      <span class="slide-id">d4</span>
+      <span class="slide-badge badge-dynamic">Dynamic ④</span>
+      <span class="slide-time">10:05 AM · 25 min · Value × Readiness Map</span>
+    </div>
+    <div class="slide-title">Map your AI ideas on two axes</div>
+    <div class="slide-purpose">Primera decisión real del room. El mapa fuerza honestidad — no puedes quedarte en teoría cuando tienes que ubicar un punto.</div>
+
+    <div class="section">
+      <div class="section-label">Instrucciones</div>
+      <div class="speech">
+        <p>"Up to this point — we built a common language."</p>
+        <p>"Now we move from understanding AI to evaluating AI opportunities with an executive lens."</p>
+        <p>"This is the map. Two axes."</p>
+        <p>"Vertical: business value. If this works — does it actually move something leadership cares about?"</p>
+        <p>"Horizontal: readiness. Do you actually have the process clarity, data availability, ownership, and organizational conditions to make this work now?"</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"Take your use cases from the first discussion. Place each one on the map. Mark which AI type it uses."</p>
+        <p>"And I'll say this clearly: <span class="key">not where you wish they were. Where they really are.</span>"</p>
+        <p>"Last 8 minutes: one spokesperson per table — share the use case that surprised you most. 45 seconds. Go."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Preguntas de presión mientras caminas</div>
+      <div class="notes">
+        <ul>
+          <li>"Why is this high value? Who in leadership would agree with that right now?"</li>
+          <li>"What makes you say this is ready? What does 'ready' actually mean in your org?"</li>
+          <li>"Who owns it? Is there a name?"</li>
+          <li>"What would break first if you tried to move on this Monday?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Lo que no debes hacer</div>
+      <div class="notes">
+        <p>No les resuelvas el cuadrante. Hazlos defenderlo. Tu trabajo aquí es hacer las preguntas incómodas, no validar las ideas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 21 -->
+  <div class="slide-block amber" id="s21">
+    <div class="slide-meta">
+      <span class="slide-num">21</span>
+      <span class="slide-id">d5</span>
+      <span class="slide-badge badge-dynamic">Pre-break ⑤</span>
+      <span class="slide-time">10:25 AM · 5 min</span>
+    </div>
+    <div class="slide-title">Pregunta de tensión pre-break</div>
+    <div class="slide-purpose">No cierras. Dejas al room con una incomodidad productiva que viaja hasta el break.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Before we go to the break — I want to leave you with one question."</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"<span class="key">Which of your ideas actually survives this filter?</span>"</p>
+        <p>"Not the one that sounds exciting. Not the one that got the most attention at the table."</p>
+        <p>"The one that survives value — and readiness — at the same time."</p>
+        <p>"We'll come back in 30 minutes. And after the break, the conversation changes."</p>
+        <p>"<span class="key">Before the break: exploration. After the break: justification.</span>"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>Break · 10:30 AM</span></div>
+
+  <!-- SLIDE 22 -->
+  <div class="slide-block" id="s22">
+    <div class="slide-meta">
+      <span class="slide-num">22</span>
+      <span class="slide-id">e0</span>
+      <span class="slide-badge badge-break">Break</span>
+      <span class="slide-time">10:30 – 11:00 AM · 30 min</span>
+    </div>
+    <div class="slide-title">Break slide</div>
+    <div class="slide-purpose">Soltar el room. Una línea y nada más.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Enjoy the break."</p>
+        <p>"Keep your map in mind — when you come back, we're going to ask you to commit to one idea."</p>
+        <p>"Sometimes the best thinking happens outside the microphone."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>Post-break · 11:00 AM</span></div>
+
+  <!-- SLIDE 23 -->
+  <div class="slide-block green" id="s23">
+    <div class="slide-meta">
+      <span class="slide-num">23</span>
+      <span class="slide-id">f1</span>
+      <span class="slide-badge badge-content">Re-entry ⑥</span>
+      <span class="slide-time">11:00 AM · 10 min</span>
+    </div>
+    <div class="slide-title">Welcome back — mode shift</div>
+    <div class="slide-purpose">Cambias el modo mental del room. De exploración a justificación. Necesitas que lo sientan, no solo que lo escuchen.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Welcome back."</p>
+        <p>"Before the break — we explored. We mapped. We surfaced a lot of ideas."</p>
+        <p>"Now we move into a different mode."</p>
+        <p>"Because in the real world, nobody asks you for ten ideas."</p>
+        <p>"They ask you for one."</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"So from this point on — the question is no longer: <em>'What could we do?'</em>"</p>
+        <p>"The question is: <span class="key">'What should we defend?'</span>"</p>
+        <p>"Look at your map. Pick one. Not the most exciting. The most defendable."</p>
+        <p>"Write it on a card. That's your starting point. Even an imperfect choice is more useful than an unordered list."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 24 -->
+  <div class="slide-block blue" id="s24">
+    <div class="slide-meta">
+      <span class="slide-num">24</span>
+      <span class="slide-id">f2</span>
+      <span class="slide-badge badge-content">Framework ⑦</span>
+      <span class="slide-time">11:10 AM · 15 min · Selection Criteria + Two-Track</span>
+    </div>
+    <div class="slide-title">Selection Criteria + Two-Track logic</div>
+    <div class="slide-purpose">El framework más importante de la sesión. Introduces los 5 criterios y el Two-Track. Dale peso — aquí está la lógica que van a usar en el ejercicio final.</div>
+
+    <div class="section">
+      <div class="section-label">Criterios de selección</div>
+      <div class="speech">
+        <p>"To help you make that choice — five criteria. Use them to evaluate your top opportunity."</p>
+        <p>"<span class="key-blue">Pain intensity.</span> Does it solve a problem that actually hurts right now?"</p>
+        <p>"<span class="key-blue">Data readiness.</span> Is the data clean, available, and owned by someone?"</p>
+        <p>"<span class="key-blue">Adoption feasibility.</span> Can your team actually use this — not in theory, in practice?"</p>
+        <p>"<span class="key-blue">Strategic alignment.</span> Does it connect to something leadership already cares about?"</p>
+        <p>"<span class="key-blue">Leadership credibility.</span> Can you explain it in executive language and have it land?"</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"If something scores low on two or more of these — it may still be a good idea. But it's not a near-term bet."</p>
+        <p>"<span class="key">The goal is not to kill ideas. It's to stop confusing interesting ideas with defendable ones.</span>"</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Two-Track — la lógica paralela</div>
+      <div class="speech">
+        <p>"Now — one more thing before the exercise. And this one matters."</p>
+        <p>"There's a trap most organizations fall into with AI."</p>
+        <p>"You either chase the quick visible win — something that gets attention, something impressive…"</p>
+        <p>"…or you go straight for the long-term foundation — the slow work, the structural work, the work nobody applauds."</p>
+        <p>"And most organizations choose one."</p>
+        <p>"<span class="key">The Two-Track says: don't choose. Run both. In parallel.</span>"</p>
+        <p>"Track 1 is the Quick Win. Something visible in 30 to 60 days. Not an endless pilot. A real, small result that someone with authority can look at and say: this works, let's keep going."</p>
+        <p>"Its job is not transformation. <span class="key-blue">Its job is credibility.</span>"</p>
+        <p>"Track 2 is the Strategic Foundation. The slow work. Data cleanup. Process clarity. Explicit ownership. Someone who says: this is mine, I'm driving it."</p>
+        <p>"And here's the critical point:"</p>
+        <p>"<span class="key">If your Quick Win works but the Foundation is not running in parallel — you don't have a scalable solution. You have an orphaned demo.</span>"</p>
+        <p>"It works once. It impresses. And then it dies."</p>
+        <p>"Same opportunity. Two tracks. Run in parallel. That's the difference between experimentation and transformation."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 25 -->
+  <div class="slide-block orange" id="s25">
+    <div class="slide-meta">
+      <span class="slide-num">25</span>
+      <span class="slide-id">f3</span>
+      <span class="slide-badge badge-dynamic">Dynamic ⑧</span>
+      <span class="slide-time">11:25 AM · 35 min · Executive Pressure</span>
+    </div>
+    <div class="slide-title">Executive Pressure — defiende tu apuesta</div>
+    <div class="slide-purpose">El ejercicio más exigente. Metes presión ejecutiva real. Tu tono cambia aquí — eres más duro, más directo.</div>
+
+    <div class="section">
+      <div class="section-label">Setup del ejercicio</div>
+      <div class="speech">
+        <p>"Now imagine this."</p>
+        <p>"Your CFO, your CEO, or your PMO sponsor looks at you and says:"</p>
+        <p><span class="pause">cambias tono — más directo, más seco</span></p>
+        <p>"<em>'Fine. You have budget for one AI move this year. Why this one?'</em>"</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"That's the question. And now your table has to answer it."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Instrucciones</div>
+      <div class="speech">
+        <p>"Three things to do at your table."</p>
+        <p>"First: rate your top three opportunities against the five criteria — high, medium, low. Two or more lows? Off the near-term agenda."</p>
+        <p>"Second: apply the Two-Track. For your strongest idea — what's the Quick Win? What's the Strategic Foundation? Who owns each one?"</p>
+        <p>"Third, last 5 minutes: name the biggest risk to your two-track approach. Not the risk you like talking about. The real one."</p>
+        <p>"You have 30 minutes. Make it count."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Mientras caminas</div>
+      <div class="notes">
+        <ul>
+          <li>Busca las mesas que están siendo demasiado amables con sus propias ideas. Empuja: "What's the honest score on data readiness — not the optimistic one?"</li>
+          <li>Si una mesa tiene dos lows en los criterios: "That's a signal. Is this a near-term bet or a future aspiration?"</li>
+          <li>La pregunta de riesgo es la más importante. Si alguien da un riesgo vago: "Make it concrete. What specifically breaks first?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 26 -->
+  <div class="slide-block blue" id="s26">
+    <div class="slide-meta">
+      <span class="slide-num">26</span>
+      <span class="slide-id">f4</span>
+      <span class="slide-badge badge-dynamic">Readout ⑨</span>
+      <span class="slide-time">12:00 PM · 15 min · Table pitches</span>
+    </div>
+    <div class="slide-title">Table readout — pitches de 60 segundos</div>
+    <div class="slide-purpose">Moderas duro. La brevedad es el punto. 60 segundos obliga claridad.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir para lanzarlo</div>
+      <div class="speech">
+        <p>"Let's hear the room. One table at a time."</p>
+        <p>"One spokesperson per table. 60 seconds maximum. I will cut at 60 — politely, but I will cut."</p>
+        <p>"Cover this: the use case, why it scores on the criteria, the quick win, and the strategic foundation."</p>
+        <p>"We're not looking for the most polished answer. We're listening for one thing: <span class="key">what makes this credible — not just interesting.</span>"</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Durante los pitches — preguntas de seguimiento</div>
+      <div class="notes">
+        <ul>
+          <li>"What makes this credible — not just interesting?"</li>
+          <li>"What assumption are you making that could be wrong?"</li>
+          <li>"What would make this fail in the first 60 days?"</li>
+          <li>"Who in your organization would push back on this — and what would they say?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-divider"><span>Cierre · 12:15 PM</span></div>
+
+  <!-- SLIDE 27 -->
+  <div class="slide-block green" id="s27">
+    <div class="slide-meta">
+      <span class="slide-num">27</span>
+      <span class="slide-id">f5</span>
+      <span class="slide-badge badge-synthesis">Convergence ⑩</span>
+      <span class="slide-time">12:15 PM · 15 min</span>
+    </div>
+    <div class="slide-title">Convergence — síntesis del room</div>
+    <div class="slide-purpose">Ya no es ideas. Es síntesis. Nombras los patrones que escuchaste y cierras con un gran punto.</div>
+
+    <div class="section">
+      <div class="section-label">Síntesis del room — nombra los patrones</div>
+      <div class="speech">
+        <p>"Let's step back for a second."</p>
+        <p>"What did we just hear?"</p>
+        <p><span class="pause">aquí nombras 2–4 patrones reales de lo que escuchaste en sala</span></p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Ejemplos de patrones (adapta según lo que veas)</div>
+      <div class="notes">
+        <ul>
+          <li>"Many of the strongest ideas were not the most futuristic."</li>
+          <li>"Readiness was the real constraint more often than imagination."</li>
+          <li>"Several tables landed on knowledge friction, reporting, and visibility."</li>
+          <li>"The strongest bets combined practical value with realistic adoption."</li>
+          <li>"Almost every table had a quick win in mind — but fewer had named who owns the foundation."</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Cierre conceptual</div>
+      <div class="speech">
+        <p>"Today was not about leaving with all the answers."</p>
+        <p>"It was about leaving with a better filter."</p>
+        <p>"<span class="key">Not every AI idea is valuable. And not every valuable idea is ready.</span>"</p>
+        <p><span class="pause">pausa</span></p>
+        <p>"<span class="key">AI is not the strategy. It is an enabler inside a strategy.</span>"</p>
+        <p>"And the organizations that will move well on this — will not start with tools."</p>
+        <p>"They will start with clarity about where the real pain lives, what value means, and what they can actually sustain."</p>
+        <p><span class="pause">pausa larga</span></p>
+        <p>"<span class="key">The biggest risk is not moving too slowly.</span>"</p>
+        <p>"<span class="key">It is moving noisily — without value logic.</span>"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 28 -->
+  <div class="slide-block amber" id="s28">
+    <div class="slide-meta">
+      <span class="slide-num">28</span>
+      <span class="slide-id">g0</span>
+      <span class="slide-badge badge-survey">Closing Survey</span>
+      <span class="slide-time">12:25 PM · ~5 min</span>
+    </div>
+    <div class="slide-title">Closing Survey — dos preguntas para cerrar</div>
+    <div class="slide-purpose">Cierre limpio. Dos preguntas honestas. Deja que el room tenga la última palabra.</div>
+
+    <div class="section">
+      <div class="section-label">Qué decir</div>
+      <div class="speech">
+        <p>"Two last questions — and these are for you, not for me."</p>
+        <p>"On screen: one thing you're taking out of this room. And one honest uncertainty you carry out."</p>
+        <p>"Take a moment. Answer on your phone."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Cierre final — después del survey</div>
+      <div class="speech">
+        <p>"Thank you for the honesty, the ideas, and the rigor in this room."</p>
+        <p>"I hope you leave with something more useful than certainty."</p>
+        <p>"<span class="key">A sharper way to think. And a better way to decide.</span>"</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Opcional — si conectas con AI-4</div>
+      <div class="notes">
+        <p>"Once you understand the landscape — the next question becomes obvious: so what do we do first? And that's exactly where the next conversation begins."</p>
+      </div>
+    </div>
+
+    <div class="keyphrase green">"Interesting is not enough. Defendable is better."</div>
+  </div>
+
+</div><!-- /doc-body -->
+</body>
+</html>
